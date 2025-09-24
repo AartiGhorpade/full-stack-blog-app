@@ -1,0 +1,144 @@
+@import "tailwindcss";
+@plugin "daisyui";
+/* 
+.dark {
+  --bg: #0f172a;
+  --textColor: #ddd;
+  --softBg: #1f273a;
+  --softTextColor: #626262;
+  background-color: rgb(1, 1, 39);
+} */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: white;
+  --softBg: #f0f0f0;
+  --softTextColor: #626262;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  font-style: normal;
+}
+
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #ccc;
+  border-top-color: #000;
+  /* you can use any color */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.readMoreBtn {
+  background-color: #063C72;
+  color: white;
+  padding: 10px 38px;
+  border-radius: 50px;
+}
+
+.readMoreBtn:hover {
+  background-color: white;
+  border: 1px solid #063C72;
+  color: #063C72;
+  font: bold;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 22px !important;
+  background-color: #063C72;
+  padding: 10px 14px;
+  border-radius: 50%;
+  color: white
+}
+
+/* Hide scrollbar but keep scroll functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE + Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.3s ease-out;
+}
+
+
+@media (max-width: 575px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+}
