@@ -1,11 +1,9 @@
 "use client";
 import Alert from "@/app/components/Alert";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Signup() {
-    const router = useRouter();
     const [alert, setAlert] = useState({ show: false, type: "", msg: "" });
     const [form, setForm] = useState({
         name: "",
@@ -78,19 +76,18 @@ export default function Signup() {
             localStorage.setItem("user", JSON.stringify(userWithoutPassword));
             setForm({ name: "", email: "", password: "", confirmPassword: "" });
             setErrors({ name: "", email: "", password: "", confirmPassword: "" });
-            setAlert({ show: true, type: "success", msg: "Signup successful!" });
+            setAlert({ show: true, type: "success", msg: "Signup successful!", id: Date.now() });
             setTimeout(() => {
                 window.location.href = '/';
             }, 50);
         } else {
-            setErrors({ ...errors, email: data.message || "Signup failed" });
-            setAlert({ show: true, type: "error", msg: data.message || "Signup failed!" });
+            setAlert({ show: true, type: "error", msg: data.message || "Signup failed!", id: Date.now() });
         }
     };
 
     return (
         <>
-            {alert.show && <Alert alertType={alert.type} msg={alert.msg} />}
+            {alert.show && <Alert key={alert.id} alertType={alert.type} msg={alert.msg} />}
             <div className="flex items-center justify-center min-h-screen container py-[120px] lg:py-[140px] sm:mx-10 mx-2">
                 <div className="w-full max-w-md bg-white dark:bg-transparent p-8 rounded-2xl shadow-lg border border-gray-200">
                     <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>

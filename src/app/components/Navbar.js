@@ -1,21 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import AuthLinks from "./AuthLinks";
 import ThemeToggler from "./ThemeToggler";
 import Image from "next/image";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [userName, setUserName] = useState('')
 
-  const user = localStorage.getItem('user');
-  let formattedName;
 
-  if (user) {
-    const parsedUser = JSON.parse(user);
-    const name = parsedUser.name;
-    formattedName = name.charAt(0).toUpperCase();
-  }
+  useEffect(() => {
+    const user = localStorage.getItem('userName')
+    setUserName(user?.charAt(0).toUpperCase())
+  }, [])
 
 
   return (
@@ -34,9 +31,14 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-6">
             <nav className="flex gap-6 text-[18px] font-medium">
               <Link href="/" className="hover:text-primary my-auto">Home</Link>
+              <Link href="/pages/writeBlog" className="hover:text-primary my-auto">Write</Link>
               <Link href="/pages/blogs" className="hover:text-primary my-auto">All Blogs</Link>
-              <span className="my-auto"><AuthLinks /></span>
-              <Link href="/pages/profile" className="hover:text-primary bg-white px-4 py-[3px] rounded-full border border-black"><span className="text-black dark:text-black font-bold">{user ? formattedName : "Profile"}</span></Link>
+              {!userName &&
+                <Link href="/pages/login">Login</Link>
+              }
+              {userName &&
+                <Link href="/pages/profile" className="hover:text-primary bg-white px-4 py-[3px] rounded-full border border-black"><span className="text-black dark:text-black font-bold">{userName}</span></Link>
+              }
             </nav>
 
             <ThemeToggler />
@@ -56,12 +58,17 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden mt-2">
+          <div className="md:hidden mt-2 px-4">
             <nav className="flex flex-col gap-4 py-5 px-4 sm:px-6 text-base font-medium border border-gray-200 rounded-lg">
               <Link href="/" onClick={() => setIsOpen(false)}>Home</Link>
-              <Link href="/pages/blogs" className="hover:text-primary">All Blogs</Link>
-              <span onClick={() => setIsOpen(false)}><AuthLinks /></span>
-              <Link href="/pages/profile" className="hover:text-primary bg-white px-4 py-[3px] rounded-full border border-black"><span className="text-black dark:text-black font-bold">{user ? formattedName : "Profile"}</span></Link>
+              <Link href="/pages/writeBlog" onClick={() => setIsOpen(false)}>Write</Link>
+              <Link href="/pages/blogs">All Blogs</Link>
+              {!userName &&
+                <Link href="/pages/login">Login</Link>
+              }
+              {userName &&
+                <Link href="/pages/profile" className="hover:text-primary bg-white px-4 py-[3px] rounded-full border border-black w-fit"><span className="text-black dark:text-black font-bold">{userName}</span></Link>
+              }
             </nav>
           </div>
         )}

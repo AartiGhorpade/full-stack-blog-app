@@ -24,7 +24,7 @@ export default function Alert({ alertType = "success", msg, duration = 2000 }) {
                 ${colors[alertType]}
                 border-t-4 rounded shadow-md px-6 py-3
                 animate-slideDown
-                w-[20%]
+                w-fit
             `}
             role="alert"
         >

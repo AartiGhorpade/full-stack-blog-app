@@ -22,6 +22,8 @@ const UserSchema = new Schema(
             required: true,
             minlength: 6,
         },
+        likedBlogs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Blog" }],
+        savedBlogs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Blog" }],
     },
     { timestamps: true }
 );

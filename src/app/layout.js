@@ -17,14 +17,13 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
       </head>
       <body className="bg-white text-black dark:bg-[#0f172a] dark:text-[#ffffff]">
-
         <div className="flex min-h-screen flex-col">
           {/* Navbar full width */}
           <div> <Navbar /></div>
 
           {/* Main content inside container */}
           <main className="flex-1">
-            <div>{children}</div>
+            {children}
           </main>
 
           {/* Footer full width */}

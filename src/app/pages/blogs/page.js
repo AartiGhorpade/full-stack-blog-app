@@ -7,7 +7,6 @@ import { useFormattedDate } from "@/app/hooks/useFormatedDate";
 
 export default function Blogs() {
     const { blogs, loading, error } = useBlogs();
-
     const [visibleCount, setVisibleCount] = useState(6);
 
     const showMoreBlogs = () => {

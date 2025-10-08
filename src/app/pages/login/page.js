@@ -2,15 +2,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import Alert from "@/app/components/Alert";
-import { useRouter, redirect } from "next/navigation";
 
 export default function Login() {
     const [form, setForm] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({ email: "", password: "" });
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState({ show: false, type: "", msg: "" });
-    const router = useRouter()
-    // Validation function
+
+
     const validateField = (name, value) => {
         let error = "";
         if (name === "email") {
@@ -57,21 +56,19 @@ export default function Login() {
         if (data.success) {
             const { password, ...userWithoutPassword } = data.user;
             localStorage.setItem("user", JSON.stringify(userWithoutPassword));
-            setAlert({ show: true, type: "success", msg: "Login Successful!" });
+            localStorage.setItem('userName', data.user.name)
+            setAlert({ show: true, type: "success", msg: "Login Successful!", id: Date.now() });
             setForm({ email: "", password: "" });
-            setTimeout(() => {
-                window.location.href = '/'; 
-            }, 50); 
+            window.location.href = '/';
 
         } else {
-            setErrors({ ...errors, password: data.message || "Invalid credentials" });
-            setAlert({ show: true, type: "error", msg: data.message || "Login Failed!" });
+            setAlert({ show: true, type: "error", msg: data.message || "Login Failed!", id: Date.now() });
         }
-    };
+    }; ``
 
     return (
         <>
-            {alert.show && <Alert alertType={alert.type} msg={alert.msg} />}
+            {alert.show && <Alert key={alert.id} alertType={alert.type} msg={alert.msg} />}
             <div className="flex items-center justify-center min-h-screen container py-[90px] lg:py-[100px] sm:mx-10 mx-2">
                 <div className="w-full max-w-md bg-white dark:bg-transparent p-8 rounded-2xl shadow-lg border border-gray-200">
                     <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
