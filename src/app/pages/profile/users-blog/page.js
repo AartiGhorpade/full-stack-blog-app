@@ -7,18 +7,24 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function page() {
-    const { userData } = useAuths()
+    const { userData, loading } = useAuths()
     const [blogs, setBlogs] = useState([])
     const [showPopup, setShowPopup] = useState(false);
     const [alert, setAlert] = useState({ show: false, type: "", msg: "" });
+    const [isFiltering, setIsFiltering] = useState(true);
 
     useEffect(() => {
+        if (!userData) {
+            setIsFiltering(false);
+            return;
+        }
         if (userData?._id) {
             fetch(`/api/blogs/singleUserBlogs/${userData._id}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
                         setBlogs(data.blogs)
+                        setIsFiltering(false);
                     }
                 });
         }
@@ -40,6 +46,13 @@ export default function page() {
         }
     };
 
+    if (loading || isFiltering) {
+        return (
+            <div className="flex items-center justify-center h-screen inset-0">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
+            </div>
+        );
+    }
 
     return (
         blogs?.length > 0 ?

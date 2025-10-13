@@ -7,7 +7,7 @@ import Alert from "@/app/components/Alert";
 
 
 export default function WriteBlog() {
-    const { userData } = useAuths()
+    const { userData, loading } = useAuths()
     const fileInputRef = useRef(null);
     const router = useRouter()
     const [form, setForm] = useState({
@@ -22,10 +22,19 @@ export default function WriteBlog() {
 
 
     useEffect(() => {
-        if (!userData) {
+        if (!userData && !loading) {
             router.push("/pages/login");
         }
     }, [userData, router]);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-screen inset-0">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
+            </div>
+        );
+    }
+
 
     if (!userData) {
         return <p>Redirecting to login...</p>;
