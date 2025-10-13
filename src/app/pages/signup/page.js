@@ -65,7 +65,7 @@ export default function Signup() {
         if (Object.values(newErrors).some((err) => err)) return;
 
         setLoading(true);
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/signup`, {
+        const res = await fetch(`/api/signup`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(form),
