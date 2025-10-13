@@ -22,7 +22,7 @@ export default function page() {
 
         setSaved(filtered);
         setIsFiltering(false);
-    }, [userData.savedBlogs, blogs]);
+    }, [userData?.savedBlogs, blogs]);
 
 
     if (loading || isFiltering) {
