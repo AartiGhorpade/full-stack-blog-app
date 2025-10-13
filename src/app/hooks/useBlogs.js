@@ -6,7 +6,7 @@ export function useBlogs() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs`)
+        fetch(`/api/blogs`)
             .then((res) => res.json())
             .then((data) => {
                 setBlogs(data.BlogData);
