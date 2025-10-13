@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useBlogs } from "../hooks/useBlogs";
+import Loader from "./Loader";
 
 export default function Featured() {
     const [changeData, setChangeData] = useState(0)
@@ -13,11 +14,9 @@ export default function Featured() {
 
         <div className="sm:mx-10 mx-2">
             {
-                loading ? <div className="fixed inset-0 bg-[#0f172a] bg-opacity-50 flex justify-center items-center z-50">
-                    <span className="loading loading-ring loading-xl"></span>
-                </div> :
+                loading ? <Loader /> :
                     <div>
-                        <p className="text-center text-[26px] md:text-[34px] xl:text-[44px] 2xl:text-[46px] 4xl:text-[48px] xl:mt-[38px] mt-[26px]">A place where I share my <strong>coding</strong>  journey  while exploring the world of <strong>software development.</strong> </p>
+                        <p className="text-center text-[26px] md:text-[34px] xl:text-[44px] 2xl:text-[46px] 4xl:text-[48px] xl:mt-[38px] mt-[26px]">A place to share your journey, ideas, and discoveries with the world while <strong>inspiring</strong> and <strong>learning</strong> from others.</p>
                         <div className="xl:mt-[48px] mt-[38px] text-center">
                             <Link href="../pages/writeBlog">
                                 <span className="text-[#063C72] border border-[#063C72] dark:text-white dark:border-white rounded-full font-semibold xl:px-[36px] xl:py-[10px] px-[26px] py-[10px] hover:bg-[#063C72] hover:broder-[#063C72] hover:text-white transition-colors duration-300 ease-in-out">

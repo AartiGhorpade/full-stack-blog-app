@@ -12,23 +12,20 @@ export async function POST(req) {
         const blog = await Blog.findById(blogId);
         const user = await User.findById(userId);
 
-        if (!user || !blog) {
-            return new Response(
-                JSON.stringify({ error: "User or Blog not found" }),
-                { status: 404 }
-            );
+        if (!blog || !user) {
+            return new Response(JSON.stringify({ error: "User or blog not found" }), { status: 404 });
         }
 
+        // Check if user already liked the blog
         const likedBlogIds = user.likedBlogs.map(id => id.toString());
         const isAlreadyLiked = likedBlogIds.includes(blog._id.toString());
 
         if (isAlreadyLiked) {
-            user.likedBlogs = user.likedBlogs.filter(
-                id => id.toString() !== blog._id.toString()
-            );
-            blog.likes = Math.max((blog.likes || 1) - 1, 0);
-
+            // Unlike the blog
+            user.likedBlogs = user.likedBlogs.filter(id => id.toString() !== blog._id.toString());
+            blog.likes = Math.max(0, blog.likes - 1);
         } else {
+            // Like the blog
             user.likedBlogs.push(blog._id);
             blog.likes = (blog.likes || 0) + 1;
         }
@@ -37,7 +34,11 @@ export async function POST(req) {
         await blog.save();
 
         return new Response(
-            JSON.stringify({ liked: !isAlreadyLiked, likedBlogs: user.likedBlogs, blogLikes: blog.likes }),
+            JSON.stringify({
+                liked: !isAlreadyLiked,
+                likedBlogs: user.likedBlogs,
+                blogLikes: blog.likes,
+            }),
             { status: 200 }
         );
     } catch (error) {

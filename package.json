@@ -19,6 +19,7 @@
     "swiper": "^11.2.10"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.13.5",
     "@tailwindcss/postcss": "^4",
     "daisyui": "^5.1.7",
     "prettier": "^3.6.2",

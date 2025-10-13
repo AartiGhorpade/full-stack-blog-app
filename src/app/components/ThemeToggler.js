@@ -3,20 +3,34 @@ import { useEffect, useState } from "react";
 
 export default function ThemeToggler() {
     const [dark, setDark] = useState(true);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        if (dark) {
-            document.documentElement.classList.add("dark");
+        setMounted(true);
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+            setDark(savedTheme === "dark");
+            document.documentElement.classList.toggle("dark", savedTheme === "dark");
         } else {
-            document.documentElement.classList.remove("dark");
+            document.documentElement.classList.add("dark");
         }
-    }, [dark]);
+    }, []);
+
+
+    if (!mounted) return null;
+
+    const toggleTheme = () => {
+        const newDark = !dark;
+        setDark(newDark);
+        document.documentElement.classList.toggle("dark", newDark);
+        localStorage.setItem("theme", newDark ? "dark" : "light");
+    };
 
     return (
         <button
-            className=""
-            onClick={() => setDark(!dark)}
-        >
+            className="text-2xl"
+            onClick={toggleTheme}
+            aria-label="Toggle Theme">
             {dark ? "🌙" : "☀️"}
         </button>
     );

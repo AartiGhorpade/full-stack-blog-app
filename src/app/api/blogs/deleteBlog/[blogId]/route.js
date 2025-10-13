@@ -9,7 +9,7 @@ export async function DELETE(req, { params }) {
     try {
         await mongoose.connect(connectionStr);
 
-        const deletedBlog = await Blog.findByIdAndDelete(blogId);
+        const deletedBlog = await Blog.findByIdAndDelete(blogId);   
 
         if (!deletedBlog) {
             return NextResponse.json(

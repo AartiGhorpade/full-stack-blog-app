@@ -28,7 +28,7 @@ export default function RecentPosts() {
                     slidesPerView={1}
                     breakpoints={{
                         640: { slidesPerView: 2 },
-                        1024: { slidesPerView: 2 },
+                        1024: { slidesPerView: 3 },
                         1280: { slidesPerView: 3 },
                     }}
                     className="multiple-slide-carousel relative cursor-grab">

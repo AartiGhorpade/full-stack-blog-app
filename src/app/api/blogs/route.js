@@ -3,7 +3,7 @@ import { connectionStr } from "@/lib/mongodb";
 import mongoose from "mongoose";
 import Blog from "@/lib/model/blog";
 import { v2 as cloudinary } from "cloudinary";
-import User from "@/lib/model/user";
+
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -52,7 +52,7 @@ export async function POST(req) {
 
         const saved = await blogData.save();
 
-        return NextResponse.json({ success: true, blogData: saved }, { status: 201 });
+        return NextResponse.json({ success: true, blogData: saved, message: "Blog Posted Successfully!" }, { status: 201 });
 
     } catch (err) {
         console.error("Error saving blog:", err);

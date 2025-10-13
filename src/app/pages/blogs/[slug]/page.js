@@ -21,9 +21,9 @@ export default async function BlogPage({ params }) {
                     {blog.title}
                 </h1>
 
-                <div className="flex gap-4">
+                <div className="flex gap-4 py-3">
                     <div>
-                        <p className={`px-3 py-1 rounded-full text-sm font-bold bg-gray-100 text-gray-700`}>
+                        <p className={`px-3 py-2 rounded-full text-sm font-bold bg-gray-100 text-gray-700`}>
                             {blog.category}
                         </p>
                     </div>

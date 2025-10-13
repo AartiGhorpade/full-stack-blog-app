@@ -1,10 +1,10 @@
 'use client'
 import { useEffect, useState } from "react";
 import Alert from "@/app/components/Alert";
-import useAuth from "@/app/hooks/useAuth";
+import useAuths from "@/app/hooks/context/AuthContext";
 
 export default function EditProfile() {
-    const { userData } = useAuth()
+    const { userData } = useAuths()
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState({ show: false, type: "", msg: "" });

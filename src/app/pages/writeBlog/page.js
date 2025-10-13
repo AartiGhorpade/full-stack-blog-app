@@ -2,10 +2,12 @@
 import { useState, useRef, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import useAuth from "@/app/hooks/useAuth";
+import useAuths from "@/app/hooks/context/AuthContext";
+import Alert from "@/app/components/Alert";
+
 
 export default function WriteBlog() {
-    const { userData, loading } = useAuth()
+    const { userData } = useAuths()
     const fileInputRef = useRef(null);
     const router = useRouter()
     const [form, setForm] = useState({
@@ -16,15 +18,14 @@ export default function WriteBlog() {
     });
     const [preview, setPreview] = useState(null);
     const [posting, setPosting] = useState(false);
+    const [alert, setAlert] = useState({ show: false, type: "", msg: "" });
+
+
     useEffect(() => {
-        if (!loading && !userData) {
+        if (!userData) {
             router.push("/pages/login");
         }
-    }, [loading, userData, router]);
-
-    if (loading) {
-        return <p>Checking authentication...</p>;
-    }
+    }, [userData, router]);
 
     if (!userData) {
         return <p>Redirecting to login...</p>;
@@ -55,7 +56,13 @@ export default function WriteBlog() {
         formData.append("content", form.content);
         formData.append("category", form.category);
         formData.append("userId", userData?._id)
-        if (form.image) formData.append("image", form.image);
+        if (form.image) {
+            formData.append("image", form.image);
+        } else {
+            const response = await fetch("https://res.cloudinary.com/db5dfbvlm/image/upload/v1760360935/dummy-blog-img_crvpza.jpg");
+            const blob = await response.blob();
+            formData.append("image", blob, "dummy-blog-img.jpg");
+        }
 
         const res = await fetch("/api/blogs", {
             method: "POST",
@@ -66,11 +73,12 @@ export default function WriteBlog() {
         setPosting(false);
 
         if (data.success) {
-
             setForm({ title: "", content: "", category: "", image: null });
+            setAlert({ show: true, type: "success", msg: data.message || "Blog Posted!", id: Date.now() });
             setPreview(null);
             if (fileInputRef.current) fileInputRef.current.value = "";
         } else {
+            setAlert({ show: true, type: "error", msg: data.message || "Blog Posting Failed!", id: Date.now() });
 
         }
     };
@@ -78,6 +86,7 @@ export default function WriteBlog() {
     return (
         <>
             <div className="container pt-[120px] lg:pt-[130px] pb-[40px] md:pb-[80px] sm:px-10 px-2">
+                {alert.show && <Alert key={alert.id} alertType={alert.type} msg={alert.msg} />}
                 <form onSubmit={handleSubmit} className="max-w-3xl">
                     {/* Title */}
                     <input
@@ -104,7 +113,7 @@ export default function WriteBlog() {
                         <button
                             type="button"
                             onClick={handleImageClick}
-                            className="flex-shrink-0 w-7 h-7 border border-gray-400 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-100"
+                            className="flex-shrink-0 cursor-pointer w-7 h-7 border border-gray-400 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-100"
                         >
                             <Plus size={16} />
                         </button>
@@ -136,7 +145,7 @@ export default function WriteBlog() {
                             <img
                                 src={preview}
                                 alt="Preview"
-                                className="rounded-xl border border-gray-300 shadow-sm max-h-96 object-cover"
+                                className="rounded-xl border border-gray-300 shadow-sm max-h-96 object-cover mt-10"
                             />
                         </div>
                     )}

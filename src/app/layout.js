@@ -1,6 +1,7 @@
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { AuthProvider } from "./hooks/context/AuthContext";
 
 
 export const metadata = {
@@ -18,16 +19,18 @@ export default function RootLayout({ children }) {
       </head>
       <body className="bg-white text-black dark:bg-[#0f172a] dark:text-[#ffffff]">
         <div className="flex min-h-screen flex-col">
-          {/* Navbar full width */}
-          <div> <Navbar /></div>
+          <AuthProvider>
+            {/* Navbar full width */}
+            <div> <Navbar /></div>
 
-          {/* Main content inside container */}
-          <main className="flex-1">
-            {children}
-          </main>
+            {/* Main content inside container */}
+            <main className="flex-1">
+              {children}
+            </main>
 
-          {/* Footer full width */}
-          <Footer />
+            {/* Footer full width */}
+            <Footer />
+          </AuthProvider>
         </div>
       </body>
     </html>

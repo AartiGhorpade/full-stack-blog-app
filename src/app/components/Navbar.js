@@ -1,18 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import ThemeToggler from "./ThemeToggler";
 import Image from "next/image";
+import useAuths from "../hooks/context/AuthContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [userName, setUserName] = useState('')
+  const { userData } = useAuths();
 
-
-  useEffect(() => {
-    const user = localStorage.getItem('userName')
-    setUserName(user?.charAt(0).toUpperCase())
-  }, [])
+  const userName = userData?.name?.charAt(0).toUpperCase();
 
 
   return (
@@ -33,10 +30,10 @@ export default function Navbar() {
               <Link href="/" className="hover:text-primary my-auto">Home</Link>
               <Link href="/pages/writeBlog" className="hover:text-primary my-auto">Write</Link>
               <Link href="/pages/blogs" className="hover:text-primary my-auto">All Blogs</Link>
-              {!userName &&
+              {!userData &&
                 <Link href="/pages/login">Login</Link>
               }
-              {userName &&
+              {userData &&
                 <Link href="/pages/profile" className="hover:text-primary bg-white px-4 py-[3px] rounded-full border border-black"><span className="text-black dark:text-black font-bold">{userName}</span></Link>
               }
             </nav>
@@ -63,10 +60,10 @@ export default function Navbar() {
               <Link href="/" onClick={() => setIsOpen(false)}>Home</Link>
               <Link href="/pages/writeBlog" onClick={() => setIsOpen(false)}>Write</Link>
               <Link href="/pages/blogs">All Blogs</Link>
-              {!userName &&
+              {!userData &&
                 <Link href="/pages/login">Login</Link>
               }
-              {userName &&
+              {userData &&
                 <Link href="/pages/profile" className="hover:text-primary bg-white px-4 py-[3px] rounded-full border border-black w-fit"><span className="text-black dark:text-black font-bold">{userName}</span></Link>
               }
             </nav>

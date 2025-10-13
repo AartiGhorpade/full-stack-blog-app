@@ -2,13 +2,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import Alert from "@/app/components/Alert";
+import { useRouter } from "next/navigation";
+import useAuths from "@/app/hooks/context/AuthContext";
 
 export default function Login() {
     const [form, setForm] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({ email: "", password: "" });
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState({ show: false, type: "", msg: "" });
-
+    const router = useRouter();
+    const { login } = useAuths()
 
     const validateField = (name, value) => {
         let error = "";
@@ -26,14 +29,11 @@ export default function Login() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm({ ...form, [name]: value });
-
         setErrors({ ...errors, [name]: validateField(name, value) });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-
         const newErrors = {
             email: validateField("email", form.email),
             password: validateField("password", form.password),
@@ -55,17 +55,13 @@ export default function Login() {
 
         if (data.success) {
             const { password, ...userWithoutPassword } = data.user;
-            localStorage.setItem("user", JSON.stringify(userWithoutPassword));
-            localStorage.setItem('userName', data.user.name)
+            login(userWithoutPassword);
             setAlert({ show: true, type: "success", msg: "Login Successful!", id: Date.now() });
-            setForm({ email: "", password: "" });
-            window.location.href = '/';
-
+            router.push("/");
         } else {
             setAlert({ show: true, type: "error", msg: data.message || "Login Failed!", id: Date.now() });
         }
-    }; ``
-
+    };
     return (
         <>
             {alert.show && <Alert key={alert.id} alertType={alert.type} msg={alert.msg} />}

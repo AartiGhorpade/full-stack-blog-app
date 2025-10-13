@@ -1,25 +1,41 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditProfile from './edit-profile/page'
 import SavedBlogs from './saved-blogs/page'
 import LikedBlogs from './liked-blogs/page'
 import UsersBlog from './users-blog/page'
+import { useRouter } from "next/navigation";
+import useAuths from "@/app/hooks/context/AuthContext";
 
 export default function Page() {
     const [showPopup, setShowPopup] = useState(false);
-    const [active, setActive] = useState("Edit Profile");
-
+    const [active, setActive] = useState(() => {
+        if (typeof window !== "undefined") {
+            return localStorage.getItem("activeProfileTab") || "Edit Profile";
+        }
+        return "Edit Profile";
+    });
+    const router = useRouter()
     const options = ["Edit Profile", "Saved", "Liked", "My Blogs", "Logout"];
 
+    const { logout } = useAuths()
+
+    useEffect(() => {
+        const savedTab = localStorage.getItem("activeProfileTab");
+        if (savedTab) setActive(savedTab);
+    }, []);
+
+
+    useEffect(() => {
+        if (active && active !== "Logout") {
+            localStorage.setItem("activeProfileTab", active);
+        }
+    }, [active]);
+
     const removeUser = () => {
-        localStorage.removeItem("user");
-        localStorage.removeItem("userName");
-        localStorage.setItem('userPresent', false)
-        setShowPopup(false);
-        window.location.href = '/';
-        setTimeout(() => {
-            window.location.reload();
-        }, 1000);
+        logout();
+        localStorage.removeItem("activeProfileTab");
+        router.push("/");
     };
 
     const handleOptionClick = (data) => {
@@ -29,6 +45,7 @@ export default function Page() {
             setActive(data);
         }
     };
+
 
     return (
         <section className="container py-[90px] lg:py-[100px]">
@@ -76,13 +93,13 @@ export default function Page() {
                         <div className="flex justify-around">
                             <button
                                 onClick={removeUser}
-                                className="px-4 py-2 4xl:text-[18px] xl:text-[16px] text-[14px] bg-red-500 text-white rounded-lg hover:bg-red-600"
+                                className="px-4 py-2 cursor-pointer 4xl:text-[18px] xl:text-[16px] text-[14px] bg-red-500 text-white rounded-lg hover:bg-red-600"
                             >
                                 Yes, Logout
                             </button>
                             <button
                                 onClick={() => setShowPopup(false)}
-                                className="px-4 py-2 4xl:text-[18px] xl:text-[16px] text-[14px] bg-gray-300 rounded-lg hover:bg-gray-400"
+                                className="px-4 py-2 cursor-pointer 4xl:text-[18px] xl:text-[16px] text-[14px] bg-gray-300 rounded-lg hover:bg-gray-400"
                             >
                                 Cancel
                             </button>

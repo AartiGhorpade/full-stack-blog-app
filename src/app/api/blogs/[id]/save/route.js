@@ -12,34 +12,32 @@ export async function POST(req) {
         const blog = await Blog.findById(blogId);
         const user = await User.findById(userId);
 
-        if (!user || !blog) {
-            return new Response(
-                JSON.stringify({ error: "User or Blog not found" }),
-                { status: 404 }
-            );
+        if (!blog || !user) {
+            return new Response(JSON.stringify({ error: "User or blog not found" }), { status: 404 });
         }
 
+        // Check if already saved
         const savedBlogIds = user.savedBlogs.map(id => id.toString());
         const isAlreadySaved = savedBlogIds.includes(blog._id.toString());
 
         if (isAlreadySaved) {
-            user.savedBlogs = user.savedBlogs.filter(
-                id => id.toString() !== blog._id.toString()
-            );
-            blog.saves = Math.max((blog.saves || 1) - 1, 0);
-
+            // Unsave
+            user.savedBlogs = user.savedBlogs.filter(id => id.toString() !== blog._id.toString());
         } else {
+            // Save
             user.savedBlogs.push(blog._id);
-            blog.saves = (blog.saves || 0) + 1;
         }
 
         await user.save();
-        await blog.save();
 
         return new Response(
-            JSON.stringify({ saved: !isAlreadySaved, savedBlogs: user.savedBlogs, blogSaves: blog.saves }),
+            JSON.stringify({
+                saved: !isAlreadySaved,
+                savedBlogs: user.savedBlogs,
+            }),
             { status: 200 }
         );
+
     } catch (error) {
         console.error("Error in saving/unsaving blog:", error);
         return new Response(JSON.stringify({ error: "Server error" }), { status: 500 });

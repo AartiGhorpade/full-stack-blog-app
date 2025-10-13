@@ -1,12 +1,12 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import Link from "next/link";
 import { useBlogs } from "@/app/hooks/useBlogs";
 import { useFormattedDate } from "@/app/hooks/useFormatedDate";
+import Loader from "@/app/components/Loader";
 
 export default function Blogs() {
-    const { blogs, loading, error } = useBlogs();
+    const { blogs, loading } = useBlogs();
     const [visibleCount, setVisibleCount] = useState(6);
 
     const showMoreBlogs = () => {
@@ -19,11 +19,7 @@ export default function Blogs() {
             {
 
                 loading ?
-                    <div className="fixed inset-0 bg-[#0f172a] bg-opacity-50 flex justify-center items-center z-50">
-                        <span className="loading loading-ring loading-xl"></span>
-                    </div> :
-
-
+                    <Loader /> :
                     <div className="sm:mx-10 mx-2">
                         <h2 className="4xl:text-[30px] 2xl:text-[28px] xl:text-[26px] md:text-[26px] text-[20px] font-bold mb-4">
                             All Blogs

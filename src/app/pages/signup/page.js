@@ -1,10 +1,13 @@
 "use client";
 import Alert from "@/app/components/Alert";
+import useAuths from "@/app/hooks/context/AuthContext";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Signup() {
     const [alert, setAlert] = useState({ show: false, type: "", msg: "" });
+    const router = useRouter()
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -18,7 +21,7 @@ export default function Signup() {
         confirmPassword: "",
     });
     const [loading, setLoading] = useState(false);
-
+    const { login } = useAuths()
     // Validation 
     const validateField = (name, value) => {
         let error = "";
@@ -73,14 +76,13 @@ export default function Signup() {
 
         if (data.success) {
             const { password, ...userWithoutPassword } = data.user;
-            localStorage.setItem("user", JSON.stringify(userWithoutPassword));
+            login(userWithoutPassword);
             setForm({ name: "", email: "", password: "", confirmPassword: "" });
             setErrors({ name: "", email: "", password: "", confirmPassword: "" });
             setAlert({ show: true, type: "success", msg: "Signup successful!", id: Date.now() });
-            setTimeout(() => {
-                window.location.href = '/';
-            }, 50);
-        } else {
+            router.push("/");
+        }
+        else {
             setAlert({ show: true, type: "error", msg: data.message || "Signup failed!", id: Date.now() });
         }
     };
