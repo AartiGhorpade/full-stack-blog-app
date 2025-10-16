@@ -11,16 +11,12 @@ export default function Navbar() {
 
   const userName = userData?.name?.charAt(0).toUpperCase();
 
-
   return (
     <header className="w-full py-4 fixed z-50 bg-white dark:bg-[#0f172a] my-auto">
       <div className="container mx-auto">
         <div className="flex items-center justify-between border border-gray-300 rounded-full px-6 lg:px-10 py-2 shadow-lg">
-
           {/* Logo */}
-          <Link
-            href="/"
-            className="">
+          <Link href="/" className="">
             <Image src="/Images/my-logo.png" width={90} height={90} alt="logo" />
           </Link>
 
@@ -30,14 +26,20 @@ export default function Navbar() {
               <Link href="/" className="hover:text-primary my-auto">Home</Link>
               <Link href="/pages/writeBlog" className="hover:text-primary my-auto">Write</Link>
               <Link href="/pages/blogs" className="hover:text-primary my-auto">All Blogs</Link>
-              {!userData &&
+              {!userData && (
                 <Link href="/pages/login">Login</Link>
-              }
-              {userData &&
-                <Link href="/pages/profile" className="hover:text-primary bg-white px-4 py-[3px] rounded-full border border-black"><span className="text-black dark:text-black font-bold">{userName}</span></Link>
-              }
+              )}
+              {userData && (
+                <Link
+                  href="/pages/profile"
+                  className="hover:text-primary bg-white px-4 py-[3px] rounded-full border border-black"
+                >
+                  <span className="text-black dark:text-black font-bold">
+                    {userName}
+                  </span>
+                </Link>
+              )}
             </nav>
-
             <ThemeToggler />
           </div>
 
@@ -59,13 +61,21 @@ export default function Navbar() {
             <nav className="flex flex-col gap-4 py-5 px-4 sm:px-6 text-base font-medium border border-gray-200 rounded-lg">
               <Link href="/" onClick={() => setIsOpen(false)}>Home</Link>
               <Link href="/pages/writeBlog" onClick={() => setIsOpen(false)}>Write</Link>
-              <Link href="/pages/blogs">All Blogs</Link>
-              {!userData &&
-                <Link href="/pages/login">Login</Link>
-              }
-              {userData &&
-                <Link href="/pages/profile" className="hover:text-primary bg-white px-4 py-[3px] rounded-full border border-black w-fit"><span className="text-black dark:text-black font-bold">{userName}</span></Link>
-              }
+              <Link href="/pages/blogs" onClick={() => setIsOpen(false)}>All Blogs</Link>
+              {!userData && (
+                <Link href="/pages/login" onClick={() => setIsOpen(false)}>Login</Link>
+              )}
+              {userData && (
+                <Link
+                  href="/pages/profile"
+                  onClick={() => setIsOpen(false)}
+                  className="hover:text-primary bg-white px-4 py-[3px] rounded-full border border-black w-fit"
+                >
+                  <span className="text-black dark:text-black font-bold">
+                    {userName}
+                  </span>
+                </Link>
+              )}
             </nav>
           </div>
         )}

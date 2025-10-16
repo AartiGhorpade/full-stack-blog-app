@@ -48,7 +48,7 @@ export default function RecentPosts() {
                                             <p className="text-sm">
                                                 {formattedDate} <span className="text-[#5C97D3] font-medium ml-2">{post.category}</span>
                                             </p>
-                                            <h2 className="4xl:text-[26px] 2xl:text-[24px] xl:text-[22px] md:text-[20px] text-[18px] font-semibold mt-2">
+                                            <h2 className="4xl:text-[26px] 2xl:text-[24px] xl:text-[22px] md:text-[20px] text-[18px] font-semibold mt-2 line-clamp-2">
                                                 {post.title}
                                             </h2>
                                             <p className="4xl:text-[18px] xl:text-[16px] text-[14px] mt-2 line-clamp-2">{post.content}</p>

@@ -25,7 +25,7 @@ export default function CategoryPage({ params }) {
     };
 
     return (
-        <section className="container pt-[120px] lg:pt-[130px] pb-[40px] md:pb-[80px]">
+        <section className="container py-[120px] lg:py-[130px]">
             <div className="sm:mx-10 mx-2">
                 <h2 className="4xl:text-[30px] 2xl:text-[28px] xl:text-[26px] md:text-[26px] text-[20px] font-bold mb-4">
                     Category : {name}
